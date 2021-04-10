@@ -29,7 +29,25 @@ mvn spring-boot:run
 ```
 ---------------------------------------
 ### APIs / Endpoints
-#### Add trade
+#### Swagger URL
+
+`<http>://<host>:<port>/swagger-ui/index.html` <br>
+
+e.g.
+http://localhost:8080/swagger-ui/index.html
+
+#### H2 URL
+
+`<http>://<host>:<port>/h2-console/login.jsp` <br>
+ <br>
+JDBC URL: jdbc:h2:mem:tradedb <br>
+User Name: sa <br>
+Passowrd: password <br>
+e.g.
+http://localhost:8080/h2-console/login.jsp
+
+
+#### Add a trade
 * Validates the request
 * Rejects the request if maturity date is less than current date
 * Rejects the request if request version is older than latest version
