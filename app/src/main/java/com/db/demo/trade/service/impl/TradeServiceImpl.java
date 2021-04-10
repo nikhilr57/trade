@@ -16,7 +16,8 @@ import org.springframework.stereotype.Service;
 
 import com.db.demo.trade.dao.entity.TradeEntity;
 import com.db.demo.trade.dao.repository.TradeRepository;
-import com.db.demo.trade.dto.Trade;
+import com.db.demo.trade.dto.TradeRequest;
+import com.db.demo.trade.dto.TradeResponse;
 import com.db.demo.trade.exception.TradeErrorCode;
 import com.db.demo.trade.exception.TradeException;
 import com.db.demo.trade.service.TradeService;
@@ -32,7 +33,7 @@ public class TradeServiceImpl implements TradeService {
 
 	@Override
 	@Transactional
-	public void saveTrade(Trade tradeRequest) {
+	public void saveTrade(TradeRequest tradeRequest) {
 
 		String tradeId = tradeRequest.getTradeId();
 		Long version = tradeRequest.getVersion();
@@ -40,11 +41,11 @@ public class TradeServiceImpl implements TradeService {
 		// Validate version
 		Long lastVersion = tradeRepository.getLatestVersion(tradeId);
 		if (lastVersion != null && lastVersion > version) {
-			LOG.error("Trade version is less that available version");
+			LOG.error("TradeRequest version is less that available version");
 			throw new TradeException(TradeErrorCode.INVALID_VERSION);
 		}
 		if (lastVersion == version) {
-			LOG.error("Trade version equal to available");
+			LOG.error("TradeRequest version equal to available");
 			updateTrade(tradeRequest, lastVersion);
 		} else {
 			// Save entity
@@ -57,7 +58,7 @@ public class TradeServiceImpl implements TradeService {
 
 	@Override
 	@Transactional
-	public void updateTrade(Trade tradeRequest, Long version) {
+	public void updateTrade(TradeRequest tradeRequest, Long version) {
 		Optional<TradeEntity> result = tradeRepository.findByTradeIdAndVersion(tradeRequest.getTradeId(), version);
 		if (result.isEmpty()) {
 			LOG.error("Record not found while updating the trade with id {} and version {}", tradeRequest.getTradeId(),
@@ -74,11 +75,11 @@ public class TradeServiceImpl implements TradeService {
 	}
 
 	@Override
-	public List<Trade> listTrades(int pageNumber, int pageSize) {
+	public List<TradeResponse> listTrades(int pageNumber, int pageSize) {
 
 		Pageable page = PageRequest.of(pageNumber, pageSize);
 		Page<TradeEntity> result = tradeRepository.findAll(page);
-		List<Trade> trades = new ArrayList<>(result.getContent().size());
+		List<TradeResponse> trades = new ArrayList<>(result.getContent().size());
 
 		// Convert to DTO and return
 		result.getContent().forEach(trade -> trades.add(ConverterUtil.convert(trade)));
@@ -86,11 +87,11 @@ public class TradeServiceImpl implements TradeService {
 	}
 
 	@Override
-	public List<Trade> listTrades(String tradeId, int pageNumber, int pageSize) {
+	public List<TradeResponse> listTrades(String tradeId, int pageNumber, int pageSize) {
 
 		Pageable page = PageRequest.of(pageNumber, pageSize);
 		Page<TradeEntity> result = tradeRepository.findByTradeId(tradeId, page);
-		List<Trade> trades = new ArrayList<>(result.getContent().size());
+		List<TradeResponse> trades = new ArrayList<>(result.getContent().size());
 
 		// Convert to DTO and return
 		result.getContent().forEach(trade -> trades.add(ConverterUtil.convert(trade)));
@@ -98,7 +99,7 @@ public class TradeServiceImpl implements TradeService {
 	}
 
 	@Override
-	public Trade getTrade(String tradeId) {
+	public TradeResponse getTrade(String tradeId) {
 
 		// Fetch latest version
 		Long reqVersion = tradeRepository.getLatestVersion(tradeId);
@@ -110,7 +111,7 @@ public class TradeServiceImpl implements TradeService {
 	}
 
 	@Override
-	public Trade getTrade(String tradeId, Long version) {
+	public TradeResponse getTrade(String tradeId, Long version) {
 
 		if (version == null) { // Null input
 			throw new TradeException(TradeErrorCode.INVALID_VERSION);

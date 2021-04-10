@@ -2,6 +2,7 @@ package com.db.demo.trade.dto;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Date;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -15,7 +16,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
-public class Trade implements Serializable {
+public class TradeResponse implements Serializable {
 
 	private static final long serialVersionUID = -1453648819192215025L;
 	@NotBlank
@@ -30,8 +31,11 @@ public class Trade implements Serializable {
 	@JsonSerialize(using = LocalDateSerializer.class)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private LocalDate maturityDate;
+	private Boolean expired;
+	private Date createdDate;
+	private Date updatedDate;
 
-	private Trade() {
+	private TradeResponse() {
 
 	}
 
@@ -75,10 +79,34 @@ public class Trade implements Serializable {
 		this.maturityDate = maturityDate;
 	}
 
+	public Boolean isExpired() {
+		return expired;
+	}
+
+	public void setExpired(Boolean expired) {
+		this.expired = expired;
+	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public Date getUpdatedDate() {
+		return updatedDate;
+	}
+
+	public void setUpdatedDate(Date updatedDate) {
+		this.updatedDate = updatedDate;
+	}
+
 	@Override
 	public String toString() {
-		return "Trade [tradeId=" + tradeId + ", version=" + version + ", counterPartyId=" + counterPartyId + ", bookId="
-				+ bookId + ", maturityDate=" + maturityDate + "]";
+		return "TradeRequest [tradeId=" + tradeId + ", version=" + version + ", counterPartyId=" + counterPartyId
+				+ ", bookId=" + bookId + ", maturityDate=" + maturityDate + ", expired=" + expired + "]";
 	}
 
 	public static class Builder {
@@ -88,6 +116,9 @@ public class Trade implements Serializable {
 		private String counterPartyId;
 		private String bookId;
 		private LocalDate maturityDate;
+		private Boolean expired;
+		private Date createdDate;
+		private Date updatedDate;
 
 		public Builder() {
 
@@ -118,16 +149,34 @@ public class Trade implements Serializable {
 			return this;
 		}
 
-		public Trade build() {
-			Trade tradeDTO = new Trade();
+		public Builder isExpired(Boolean expired) {
+			this.expired = expired;
+			return this;
+		}
 
-			tradeDTO.setTradeId(tradeId);
-			tradeDTO.setVersion(version);
-			tradeDTO.setCounterPartyId(counterPartyId);
-			tradeDTO.setBookId(bookId);
-			tradeDTO.setMaturityDate(maturityDate);
+		public Builder setCreatedDate(Date createdDate) {
+			this.createdDate = createdDate;
+			return this;
+		}
 
-			return tradeDTO;
+		public Builder setUpdatedDate(Date updatedDate) {
+			this.updatedDate = updatedDate;
+			return this;
+		}
+
+		public TradeResponse build() {
+			TradeResponse tradeRes = new TradeResponse();
+
+			tradeRes.setTradeId(tradeId);
+			tradeRes.setVersion(version);
+			tradeRes.setCounterPartyId(counterPartyId);
+			tradeRes.setBookId(bookId);
+			tradeRes.setMaturityDate(maturityDate);
+			tradeRes.setExpired(expired);
+			tradeRes.setCreatedDate(createdDate);
+			tradeRes.setUpdatedDate(updatedDate);
+
+			return tradeRes;
 		}
 	}
 

@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.db.demo.trade.dto.Trade;
+import com.db.demo.trade.dto.TradeRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
@@ -29,7 +29,7 @@ public class TradeApplicationIntegrationTest {
 
 		ObjectMapper objectMapper = new ObjectMapper();
 
-		Trade tradeReq = new Trade.Builder().setTradeId("T1").setBookId("B1").setCounterPartyId("CP1").setVersion(1L)
+		TradeRequest tradeReq = new TradeRequest.Builder().setTradeId("T1").setBookId("B1").setCounterPartyId("CP1").setVersion(1L)
 				.setMaturityDate(LocalDate.now()).build();
 
 		this.mockMvc.perform(post("/trades").content(objectMapper.writeValueAsString(tradeReq))

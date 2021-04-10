@@ -2,7 +2,8 @@ package com.db.demo.trade.service;
 
 import java.util.List;
 
-import com.db.demo.trade.dto.Trade;
+import com.db.demo.trade.dto.TradeRequest;
+import com.db.demo.trade.dto.TradeResponse;
 
 public interface TradeService {
 
@@ -11,14 +12,14 @@ public interface TradeService {
 	 * 
 	 * @param tradeRequest
 	 */
-	void saveTrade(Trade tradeRequest);
+	void saveTrade(TradeRequest tradeRequest);
 
 	/**
 	 * Update the trade record
 	 * 
 	 * @param tradeRequest
 	 */
-	void updateTrade(Trade tradeRequest, Long version);
+	void updateTrade(TradeRequest tradeRequest, Long version);
 
 	/**
 	 * Returns all trade records
@@ -27,7 +28,7 @@ public interface TradeService {
 	 * @param pageSize
 	 * @return
 	 */
-	List<Trade> listTrades(int pageNumber, int pageSize);
+	List<TradeResponse> listTrades(int pageNumber, int pageSize);
 
 	/**
 	 * Returns all trade records by ID
@@ -37,7 +38,7 @@ public interface TradeService {
 	 * @param pageSize
 	 * @return
 	 */
-	List<Trade> listTrades(String tradeId, int pageNumber, int pageSize);
+	List<TradeResponse> listTrades(String tradeId, int pageNumber, int pageSize);
 
 	/**
 	 * Returns latest version of a trade
@@ -45,7 +46,7 @@ public interface TradeService {
 	 * @param tradeId
 	 * @return
 	 */
-	Trade getTrade(String tradeId);
+	TradeResponse getTrade(String tradeId);
 
 	/**
 	 * Returns a trade of specified version
@@ -54,7 +55,7 @@ public interface TradeService {
 	 * @param version
 	 * @return
 	 */
-	Trade getTrade(String tradeId, Long version);
+	TradeResponse getTrade(String tradeId, Long version);
 
 	/**
 	 * Updates the trade expiry by maturity date
