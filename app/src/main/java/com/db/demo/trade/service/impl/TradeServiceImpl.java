@@ -8,6 +8,7 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,7 +27,7 @@ import com.db.demo.trade.util.ConverterUtil;
 @Service
 public class TradeServiceImpl implements TradeService {
 
-	private static final Logger LOG = org.slf4j.LoggerFactory.getLogger(TradeServiceImpl.class);
+	private static final Logger LOG = LoggerFactory.getLogger(TradeServiceImpl.class);
 
 	@Autowired
 	private TradeRepository tradeRepository;
@@ -128,6 +129,7 @@ public class TradeServiceImpl implements TradeService {
 	@Override
 	@Transactional
 	public void processMaturityDate() {
+		LOG.warn("Starting Scheduler {} ", LocalDate.now());
 		tradeRepository.processMaturityDate(true, LocalDate.now());
 
 	}

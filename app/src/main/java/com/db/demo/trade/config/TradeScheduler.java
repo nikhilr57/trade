@@ -14,8 +14,8 @@ public class TradeScheduler {
 	@Autowired
 	private TradeService tradeService;
 
-	// @Scheduled(cron="0 0 0 * * ?") // midnight
-	@Scheduled(cron = "0 0/2 * * * ?") // every minute
+	@Scheduled(cron = "0 0 0 * * ?") // Every midnight
+	// @Scheduled(cron = "0 0/2 * * * ?") // Every two minutes
 	public void processMaturityDate() {
 		tradeService.processMaturityDate();
 	}
