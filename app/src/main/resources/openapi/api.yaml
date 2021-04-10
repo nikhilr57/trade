@@ -1,0 +1,111 @@
+openapi: 3.0.1
+info:
+  title: Trading Service
+  description: 'This is a simple application which deals with Trading.'
+  contact:
+    email: nikhilr57@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+- url: http://localhost:80/v1beta1
+tags:
+- name: trade
+  description: Trade Service
+paths:
+  /trade:
+    get:
+      tags:
+      - trade
+      summary: List trades
+      description: Returns a list of trades
+      operationId: getTrades
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Trade'
+    post:
+      tags:
+      - trade
+      summary: Add a new tarde to the store
+      operationId: createTrade
+      requestBody:
+        description: Trade object that needs to be added to the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Trade'
+        required: true
+      responses:
+        405:
+          description: Invalid input
+          content: {}
+      x-codegen-request-body-name: body
+  /trade/{tradeId}:
+    get:
+      tags:
+      - trade
+      summary: Find trade by ID
+      description: Returns a list of trade by Id
+      operationId: getTradeById
+      parameters:
+      - name: tradeId
+        in: path
+        description: ID of trade to return
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Trade'
+        400:
+          description: Invalid ID supplied
+          content: {}
+        404:
+          description: Trade not found
+          content: {}
+components:
+  schemas:
+    Trade:
+      required:
+      - tradeId
+      - version
+      type: object
+      properties:
+        tradeId:
+          type: string
+        version:
+          type: integer
+          format: int64
+        counterPartyId:
+          type: string
+          example: CP-1
+        bookId:
+          type: string
+          example: B1
+        maturityDate:
+          type: string
+          example: date
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
