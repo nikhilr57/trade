@@ -23,7 +23,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "TRADE", indexes = { @Index(name = "tradeIndex", columnList = "tradeId,version") }, uniqueConstraints = {
 		@UniqueConstraint(columnNames = { "tradeId", "version" }) })
-public class Trade implements Serializable {
+public class TradeEntity implements Serializable {
 
 	private static final long serialVersionUID = 7932470298137869962L;
 
@@ -38,13 +38,13 @@ public class Trade implements Serializable {
 	@Column(name = "version", updatable = false, nullable = false)
 	private Long version;
 
-	@Column(name = "counterPartyId", updatable = false, nullable = false)
+	@Column(name = "counterPartyId", updatable = true, nullable = false)
 	private String counterPartyId;
 
-	@Column(name = "bookId", updatable = false, nullable = false)
+	@Column(name = "bookId", updatable = true, nullable = false)
 	private String bookId;
 
-	@Column(name = "maturityDate", updatable = false, nullable = false)
+	@Column(name = "maturityDate", updatable = true, nullable = false)
 	private LocalDate maturityDate;
 
 	@CreatedDate
@@ -60,11 +60,11 @@ public class Trade implements Serializable {
 	@Column(name = "expired", updatable = true, nullable = false)
 	private Boolean expired = Boolean.FALSE;
 
-	public Trade() {
+	public TradeEntity() {
 
 	}
 
-	public Trade(String tradeId, Long version, String counterPartyId, String bookId, LocalDate maturityDate) {
+	public TradeEntity(String tradeId, Long version, String counterPartyId, String bookId, LocalDate maturityDate) {
 		this.tradeId = tradeId;
 		this.version = version;
 		this.counterPartyId = counterPartyId;
@@ -146,7 +146,7 @@ public class Trade implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Trade [id=" + id + ", tradeId=" + tradeId + ", version=" + version + ", counterPartyId="
+		return "TradeEntity [id=" + id + ", tradeId=" + tradeId + ", version=" + version + ", counterPartyId="
 				+ counterPartyId + ", bookId=" + bookId + ", maturityDate=" + maturityDate + ", createdDate="
 				+ createdDate + ", updatedDate=" + updatedDate + ", expired=" + expired + "]";
 	}

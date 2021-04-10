@@ -3,17 +3,25 @@ package com.db.demo.trade.dto;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-public class TradeDTO implements Serializable {
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+
+public class Trade implements Serializable {
 
 	private static final long serialVersionUID = -1453648819192215025L;
-
 	private String tradeId;
 	private Long version;
 	private String counterPartyId;
 	private String bookId;
+	@JsonDeserialize(using = LocalDateDeserializer.class)
+	@JsonSerialize(using = LocalDateSerializer.class)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private LocalDate maturityDate;
 
-	private TradeDTO() {
+	private Trade() {
 
 	}
 
@@ -59,8 +67,8 @@ public class TradeDTO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "TradeDTO [tradeId=" + tradeId + ", version=" + version + ", counterPartyId=" + counterPartyId
-				+ ", bookId=" + bookId + ", maturityDate=" + maturityDate + "]";
+		return "Trade [tradeId=" + tradeId + ", version=" + version + ", counterPartyId=" + counterPartyId + ", bookId="
+				+ bookId + ", maturityDate=" + maturityDate + "]";
 	}
 
 	public static class Builder {
@@ -100,8 +108,8 @@ public class TradeDTO implements Serializable {
 			return this;
 		}
 
-		public TradeDTO build() {
-			TradeDTO tradeDTO = new TradeDTO();
+		public Trade build() {
+			Trade tradeDTO = new Trade();
 
 			tradeDTO.setTradeId(tradeId);
 			tradeDTO.setVersion(version);

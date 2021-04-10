@@ -15,9 +15,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import com.db.demo.trade.dao.entity.Trade;
+import com.db.demo.trade.dao.entity.TradeEntity;
 import com.db.demo.trade.dao.repository.TradeRepository;
-import com.db.demo.trade.dto.TradeDTO;
+import com.db.demo.trade.dto.Trade;
 import com.db.demo.trade.exception.TradeException;
 
 @ExtendWith(MockitoExtension.class)
@@ -29,7 +29,7 @@ public class TradeServiceImplTest {
 	private TradeRepository tradeRepository;
 
 	@Mock
-	private Page<Trade> page;
+	private Page<TradeEntity> page;
 
 	@InjectMocks
 	private TradeServiceImpl tradeService;
@@ -38,7 +38,7 @@ public class TradeServiceImplTest {
 	@DisplayName("Creating trade with older version")
 	public void testSaveTrade() {
 
-		TradeDTO tradeRequest = new TradeDTO.Builder().setTradeId(T1).setVersion(9L).build();
+		Trade tradeRequest = new Trade.Builder().setTradeId(T1).setVersion(9L).build();
 		Mockito.when(tradeRepository.getLatestVersion(T1)).thenReturn(10L);
 		Exception exception = assertThrows(TradeException.class, () -> tradeService.saveTrade(tradeRequest));
 		assertEquals("Invalid version", exception.getMessage());
@@ -47,11 +47,11 @@ public class TradeServiceImplTest {
 	@Test
 	@DisplayName("Create trade")
 	public void testSaveTradeSuccess() {
-		TradeDTO tradeRequest = new TradeDTO.Builder().setTradeId(T1).setVersion(9L).build();
+		Trade tradeRequest = new Trade.Builder().setTradeId(T1).setVersion(9L).build();
 		Mockito.when(tradeRepository.getLatestVersion(T1)).thenReturn(1L);
 		tradeService.saveTrade(tradeRequest);
 
-		Mockito.verify(tradeRepository, Mockito.times(1)).save(Mockito.any(Trade.class));
+		Mockito.verify(tradeRepository, Mockito.times(1)).save(Mockito.any(TradeEntity.class));
 	}
 
 	@Test
@@ -59,7 +59,7 @@ public class TradeServiceImplTest {
 	public void testListTrade() {
 
 		Mockito.when(tradeRepository.findByTradeId(Mockito.eq(T1), Mockito.any(Pageable.class))).thenReturn(page);
-		Mockito.when(page.getContent()).thenReturn(new ArrayList<Trade>());
+		Mockito.when(page.getContent()).thenReturn(new ArrayList<TradeEntity>());
 		tradeService.listTrades(T1, 0, 5);
 		Mockito.verify(tradeRepository, Mockito.times(1)).findByTradeId(Mockito.eq(T1), Mockito.any(Pageable.class));
 
