@@ -38,7 +38,8 @@ public interface TradeApi {
 					@ApiResponse(responseCode = "200", description = "List of trades", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = Trade.class))) })
 	@GetMapping(value = "/trades/{tradeId}", produces = { MediaType.APPLICATION_JSON_VALUE })
 	ResponseEntity<List<Trade>> listTradeById(@PathVariable("tradeId") String tradeId,
-			@RequestParam("pageSize") Integer pageSize, @RequestParam("pageNumber") Integer pageNumber);
+			@RequestParam(name = "pageSize", defaultValue = "20", required = false) Integer pageSize,
+			@RequestParam(name = "pageNumber", defaultValue = "0", required = false) Integer pageNumber);
 
 	@Operation(summary = "Get a trade", tags = { TAG_TRADE }, description = "Get trade by ID and version", responses = {
 			@ApiResponse(responseCode = "200", description = "A trade object", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = Trade.class))) })
@@ -48,7 +49,8 @@ public interface TradeApi {
 
 	@Operation(summary = "List all trades", tags = { TAG_TRADE })
 	@GetMapping(value = "/trades", produces = { MediaType.APPLICATION_JSON_VALUE })
-	ResponseEntity<List<Trade>> listAllTrades(@RequestParam("pageSize") Integer pageSize,
-			@RequestParam("pageNumber") Integer pageNumber);
+	ResponseEntity<List<Trade>> listAllTrades(
+			@RequestParam(name = "pageSize", defaultValue = "20", required = false) Integer pageSize,
+			@RequestParam(name = "pageNumber", defaultValue = "0", required = false) Integer pageNumber);
 
 }
