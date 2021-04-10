@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +25,8 @@ import com.db.demo.trade.util.ConverterUtil;
 @Service
 public class TradeServiceImpl implements TradeService {
 
+	private static final Logger LOG = org.slf4j.LoggerFactory.getLogger(TradeServiceImpl.class);
+
 	@Autowired
 	private TradeRepository tradeRepository;
 
@@ -37,25 +40,28 @@ public class TradeServiceImpl implements TradeService {
 		// Validate version
 		Long lastVersion = tradeRepository.getLatestVersion(tradeId);
 		if (lastVersion != null && lastVersion > version) {
+			LOG.error("Trade version is less that available version");
 			throw new TradeException(TradeErrorCode.INVALID_VERSION);
 		}
 		if (lastVersion == version) {
-
+			LOG.error("Trade version equal to available");
+			updateTrade(tradeRequest, lastVersion);
+		} else {
+			// Save entity
+			TradeEntity trade = new TradeEntity(tradeId, version, tradeRequest.getCounterPartyId(),
+					tradeRequest.getBookId(), tradeRequest.getMaturityDate());
+			trade = tradeRepository.save(trade);
+			tradeRepository.flush();
 		}
-
-		// Save entity
-		TradeEntity trade = new TradeEntity(tradeId, version, tradeRequest.getCounterPartyId(),
-				tradeRequest.getBookId(), tradeRequest.getMaturityDate());
-		trade = tradeRepository.save(trade);
-		// TODO debug log with PK printed
-		tradeRepository.flush();
 	}
 
 	@Override
 	@Transactional
-	public void updateTrade(Trade tradeRequest) {
-		Optional<TradeEntity> result = tradeRepository.findByTradeId(tradeRequest.getTradeId());
+	public void updateTrade(Trade tradeRequest, Long version) {
+		Optional<TradeEntity> result = tradeRepository.findByTradeIdAndVersion(tradeRequest.getTradeId(), version);
 		if (result.isEmpty()) {
+			LOG.error("Record not found while updating the trade with id {} and version {}", tradeRequest.getTradeId(),
+					tradeRequest.getVersion());
 			throw new TradeException(TradeErrorCode.TRADE_NOT_FOUND);
 		}
 		TradeEntity trade = result.get();

@@ -31,12 +31,7 @@ public class TradeControllerAdvice implements ProblemHandling, ConstraintViolati
 		return false;
 	}
 
-	@Override
-	public ResponseEntity<Problem> handleMessageNotReadableException(final HttpMessageNotReadableException exception,
-			NativeWebRequest request) {
-		LOG.error("[HttpMessageNotReadableException] {}", exception.getMessage());
-		return handleException(TradeErrorCode.VALIDATION_EXCEPTION, request);
-	}
+	
 
 	@ExceptionHandler(TradeException.class)
 	public ResponseEntity<Problem> handleTradeException(final TradeException exception,

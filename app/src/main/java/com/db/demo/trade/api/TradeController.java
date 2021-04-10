@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,11 +16,14 @@ import com.db.demo.trade.validation.RequestValidator;
 @RestController
 public class TradeController implements TradeApi {
 
+	private static final Logger LOG = org.slf4j.LoggerFactory.getLogger(TradeController.class);
+
 	@Autowired
 	private TradeService tradeService;
 
 	@Override
 	public ResponseEntity<Void> saveTrade(@Valid Trade tradeRequest) {
+		LOG.debug("Save Trade {}", tradeRequest);
 		RequestValidator.validateRequest(tradeRequest);
 		tradeService.saveTrade(tradeRequest);
 		return ResponseEntity.ok().build();

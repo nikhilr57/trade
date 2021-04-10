@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -52,6 +53,37 @@ public class TradeServiceImplTest {
 		tradeService.saveTrade(tradeRequest);
 
 		Mockito.verify(tradeRepository, Mockito.times(1)).save(Mockito.any(TradeEntity.class));
+		Mockito.verify(tradeRepository, Mockito.times(1)).flush();
+	}
+
+	@Test
+	@DisplayName("Create trade with same last version")
+	public void testSaveTradeUpdate() {
+		Trade tradeRequest = new Trade.Builder().setTradeId(T1).setVersion(5L).build();
+		Mockito.when(tradeRepository.getLatestVersion(T1)).thenReturn(5L);
+
+		TradeEntity tEntity = new TradeEntity();
+		Mockito.when(tradeRepository.findByTradeIdAndVersion(Mockito.eq(T1), Mockito.eq(5L)))
+				.thenReturn(Optional.of(tEntity));
+
+		tradeService.saveTrade(tradeRequest);
+
+		Mockito.verify(tradeRepository, Mockito.times(1)).save(Mockito.any(TradeEntity.class));
+		Mockito.verify(tradeRepository, Mockito.times(1)).flush();
+	}
+
+	@Test
+	@DisplayName("Update trade")
+	public void testUpdate() {
+		Trade tradeRequest = new Trade.Builder().setTradeId(T1).setVersion(5L).build();
+		TradeEntity tEntity = new TradeEntity();
+		Mockito.when(tradeRepository.findByTradeIdAndVersion(Mockito.eq(T1), Mockito.eq(5L)))
+				.thenReturn(Optional.of(tEntity));
+
+		tradeService.updateTrade(tradeRequest, 5L);
+
+		Mockito.verify(tradeRepository, Mockito.times(1)).save(Mockito.any(TradeEntity.class));
+		Mockito.verify(tradeRepository, Mockito.times(1)).flush();
 	}
 
 	@Test

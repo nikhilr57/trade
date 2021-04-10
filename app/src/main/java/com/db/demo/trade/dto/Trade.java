@@ -3,6 +3,12 @@ package com.db.demo.trade.dto;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -12,10 +18,14 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 public class Trade implements Serializable {
 
 	private static final long serialVersionUID = -1453648819192215025L;
+	@NotBlank
 	private String tradeId;
+	@NotNull
+	@Min(1)
 	private Long version;
 	private String counterPartyId;
 	private String bookId;
+	@DateTimeFormat(pattern = "dd/mm/yyyy")
 	@JsonDeserialize(using = LocalDateDeserializer.class)
 	@JsonSerialize(using = LocalDateSerializer.class)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")

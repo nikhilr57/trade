@@ -16,7 +16,6 @@ import com.db.demo.trade.dao.entity.TradeEntity;
 @Repository
 public interface TradeRepository extends JpaRepository<TradeEntity, Long> {
 
-	Optional<TradeEntity> findByTradeId(String tradeId);
 
 	@Query(value = "SELECT MAX(version) FROM TradeEntity where tradeId=:tradeId GROUP BY tradeId")
 	Long getLatestVersion(String tradeId);

@@ -18,7 +18,7 @@ public interface TradeService {
 	 * 
 	 * @param tradeRequest
 	 */
-	void updateTrade(Trade tradeRequest);
+	void updateTrade(Trade tradeRequest, Long version);
 
 	/**
 	 * Returns all trade records
