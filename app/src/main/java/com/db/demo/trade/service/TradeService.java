@@ -7,19 +7,46 @@ import com.db.demo.trade.dto.TradeDTO;
 public interface TradeService {
 
 	/**
-	 * Creates a Trade entity in the database
+	 * Saved a new trade record
 	 * 
 	 * @param tradeRequest
 	 */
-	void createTrade(TradeDTO tradeRequest);
+	void saveTrade(TradeDTO tradeRequest); // FIXME
 
 	/**
-	 * Returns all records for trade
+	 * Returns all trade records
 	 * 
 	 * @param pageNumber
 	 * @param pageSize
 	 * @return
 	 */
-	List<TradeDTO> listTrade(int pageNumber, int pageSize);
+	List<TradeDTO> listTrades(int pageNumber, int pageSize);
+
+	/**
+	 * Returns all trade records by ID
+	 * 
+	 * @param tradeId
+	 * @param pageNumber
+	 * @param pageSize
+	 * @return
+	 */
+	List<TradeDTO> listTrades(String tradeId, int pageNumber, int pageSize);
+
+	/**
+	 * Returns latest version of a trade
+	 * 
+	 * @param tradeId
+	 * @return
+	 */
+	TradeDTO getTrade(String tradeId);
+
+	/**
+	 * Returns a trade of specified version
+	 * 
+	 * @param tradeId
+	 * @param version
+	 * @return
+	 */
+	TradeDTO getTrade(String tradeId, Long version);
 
 }

@@ -17,8 +17,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Validated
+@Tag(name = "trade")
 public interface TradeApi {
 
 	@Operation(summary = "Add a trade", tags = { "trade" }, description = "", responses = {
@@ -26,7 +28,7 @@ public interface TradeApi {
 			@ApiResponse(responseCode = "404", description = "Pet not found") })
 
 	@PostMapping(value = "/trades", consumes = { "application/json" })
-	ResponseEntity<Void> createTrade(@Valid @RequestBody TradeDTO tradeDTO);
+	ResponseEntity<Void> saveTrade(@Valid @RequestBody TradeDTO tradeRequest);
 
 	@Operation(summary = "Get trade", tags = { "trade" }, description = "Get trade by ID", responses = {
 			@ApiResponse(responseCode = "200", description = "List of trades", content = @Content(mediaType = "application/json", schema = @Schema(implementation = TradeDTO.class))) })

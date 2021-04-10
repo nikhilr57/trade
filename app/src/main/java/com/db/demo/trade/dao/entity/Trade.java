@@ -1,6 +1,7 @@
-package com.db.demo.trade.entity;
+package com.db.demo.trade.dao.entity;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -43,9 +44,8 @@ public class Trade implements Serializable {
 	@Column(name = "bookId", updatable = false, nullable = false)
 	private String bookId;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name = "maturityDate", updatable = false, nullable = false)
-	private Date maturityDate;
+	private LocalDate maturityDate;
 
 	@CreatedDate
 	@Temporal(TemporalType.DATE)
@@ -58,13 +58,13 @@ public class Trade implements Serializable {
 	private Date updatedDate;
 
 	@Column(name = "expired", updatable = true, nullable = false)
-	private Boolean exipred = Boolean.FALSE;
+	private Boolean expired = Boolean.FALSE;
 
 	public Trade() {
 
 	}
 
-	public Trade(String tradeId, Long version, String counterPartyId, String bookId, Date maturityDate) {
+	public Trade(String tradeId, Long version, String counterPartyId, String bookId, LocalDate maturityDate) {
 		this.tradeId = tradeId;
 		this.version = version;
 		this.counterPartyId = counterPartyId;
@@ -112,11 +112,11 @@ public class Trade implements Serializable {
 		this.bookId = bookId;
 	}
 
-	public Date getMaturityDate() {
+	public LocalDate getMaturityDate() {
 		return maturityDate;
 	}
 
-	public void setMaturityDate(Date maturtiyDate) {
+	public void setMaturityDate(LocalDate maturtiyDate) {
 		this.maturityDate = maturtiyDate;
 	}
 
@@ -136,19 +136,19 @@ public class Trade implements Serializable {
 		this.updatedDate = updatedDate;
 	}
 
-	public Boolean getExipred() {
-		return exipred;
+	public Boolean getExpired() {
+		return expired;
 	}
 
-	public void setExipred(Boolean exipred) {
-		this.exipred = exipred;
+	public void setExpired(Boolean exipred) {
+		this.expired = exipred;
 	}
 
 	@Override
 	public String toString() {
 		return "Trade [id=" + id + ", tradeId=" + tradeId + ", version=" + version + ", counterPartyId="
 				+ counterPartyId + ", bookId=" + bookId + ", maturityDate=" + maturityDate + ", createdDate="
-				+ createdDate + ", updatedDate=" + updatedDate + ", exipred=" + exipred + "]";
+				+ createdDate + ", updatedDate=" + updatedDate + ", expired=" + expired + "]";
 	}
 
 }

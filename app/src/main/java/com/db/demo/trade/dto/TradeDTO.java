@@ -1,27 +1,20 @@
 package com.db.demo.trade.dto;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 public class TradeDTO implements Serializable {
 
 	private static final long serialVersionUID = -1453648819192215025L;
+
 	private String tradeId;
 	private Long version;
 	private String counterPartyId;
 	private String bookId;
-	private Date maturityDate;
+	private LocalDate maturityDate;
 
-	public TradeDTO() {
+	private TradeDTO() {
 
-	}
-
-	public TradeDTO(String tradeId, Long version, String counterPartyId, String bookId, Date maturityDate) {
-		this.tradeId = tradeId;
-		this.version = version;
-		this.counterPartyId = counterPartyId;
-		this.bookId = bookId;
-		this.maturityDate = maturityDate;
 	}
 
 	public String getTradeId() {
@@ -56,11 +49,11 @@ public class TradeDTO implements Serializable {
 		this.bookId = bookId;
 	}
 
-	public Date getMaturityDate() {
+	public LocalDate getMaturityDate() {
 		return maturityDate;
 	}
 
-	public void setMaturityDate(Date maturityDate) {
+	public void setMaturityDate(LocalDate maturityDate) {
 		this.maturityDate = maturityDate;
 	}
 
@@ -68,6 +61,56 @@ public class TradeDTO implements Serializable {
 	public String toString() {
 		return "TradeDTO [tradeId=" + tradeId + ", version=" + version + ", counterPartyId=" + counterPartyId
 				+ ", bookId=" + bookId + ", maturityDate=" + maturityDate + "]";
+	}
+
+	public static class Builder {
+
+		private String tradeId;
+		private Long version;
+		private String counterPartyId;
+		private String bookId;
+		private LocalDate maturityDate;
+
+		public Builder() {
+
+		}
+
+		public Builder setTradeId(String tradeId) {
+			this.tradeId = tradeId;
+			return this;
+		}
+
+		public Builder setVersion(Long version) {
+			this.version = version;
+			return this;
+		}
+
+		public Builder setCounterPartyId(String counterPartyId) {
+			this.counterPartyId = counterPartyId;
+			return this;
+		}
+
+		public Builder setBookId(String bookId) {
+			this.bookId = bookId;
+			return this;
+		}
+
+		public Builder setMaturityDate(LocalDate maturityDate) {
+			this.maturityDate = maturityDate;
+			return this;
+		}
+
+		public TradeDTO build() {
+			TradeDTO tradeDTO = new TradeDTO();
+
+			tradeDTO.setTradeId(tradeId);
+			tradeDTO.setVersion(version);
+			tradeDTO.setCounterPartyId(counterPartyId);
+			tradeDTO.setBookId(bookId);
+			tradeDTO.setMaturityDate(maturityDate);
+
+			return tradeDTO;
+		}
 	}
 
 }
