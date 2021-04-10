@@ -48,12 +48,12 @@ public class TradeEntity implements Serializable {
 	private LocalDate maturityDate;
 
 	@CreatedDate
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "createdDate", updatable = false, nullable = false)
 	private Date createdDate;
 
 	@LastModifiedDate
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "updatedDate", updatable = true, nullable = false)
 	private Date updatedDate;
 

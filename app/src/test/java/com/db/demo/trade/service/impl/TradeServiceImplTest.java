@@ -18,7 +18,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.db.demo.trade.dao.entity.TradeEntity;
 import com.db.demo.trade.dao.repository.TradeRepository;
-import com.db.demo.trade.dto.Trade;
+import com.db.demo.trade.dto.TradeRequest;
 import com.db.demo.trade.exception.TradeException;
 
 @ExtendWith(MockitoExtension.class)
@@ -39,7 +39,7 @@ public class TradeServiceImplTest {
 	@DisplayName("Creating trade with older version")
 	public void testSaveTrade() {
 
-		Trade tradeRequest = new Trade.Builder().setTradeId(T1).setVersion(9L).build();
+		TradeRequest tradeRequest = new TradeRequest.Builder().setTradeId(T1).setVersion(9L).build();
 		Mockito.when(tradeRepository.getLatestVersion(T1)).thenReturn(10L);
 		Exception exception = assertThrows(TradeException.class, () -> tradeService.saveTrade(tradeRequest));
 		assertEquals("Invalid version", exception.getMessage());
@@ -48,7 +48,7 @@ public class TradeServiceImplTest {
 	@Test
 	@DisplayName("Create trade")
 	public void testSaveTradeSuccess() {
-		Trade tradeRequest = new Trade.Builder().setTradeId(T1).setVersion(9L).build();
+		TradeRequest tradeRequest = new TradeRequest.Builder().setTradeId(T1).setVersion(9L).build();
 		Mockito.when(tradeRepository.getLatestVersion(T1)).thenReturn(1L);
 		tradeService.saveTrade(tradeRequest);
 
@@ -59,7 +59,7 @@ public class TradeServiceImplTest {
 	@Test
 	@DisplayName("Create trade with same last version")
 	public void testSaveTradeUpdate() {
-		Trade tradeRequest = new Trade.Builder().setTradeId(T1).setVersion(5L).build();
+		TradeRequest tradeRequest = new TradeRequest.Builder().setTradeId(T1).setVersion(5L).build();
 		Mockito.when(tradeRepository.getLatestVersion(T1)).thenReturn(5L);
 
 		TradeEntity tEntity = new TradeEntity();
@@ -75,7 +75,7 @@ public class TradeServiceImplTest {
 	@Test
 	@DisplayName("Update trade")
 	public void testUpdate() {
-		Trade tradeRequest = new Trade.Builder().setTradeId(T1).setVersion(5L).build();
+		TradeRequest tradeRequest = new TradeRequest.Builder().setTradeId(T1).setVersion(5L).build();
 		TradeEntity tEntity = new TradeEntity();
 		Mockito.when(tradeRepository.findByTradeIdAndVersion(Mockito.eq(T1), Mockito.eq(5L)))
 				.thenReturn(Optional.of(tEntity));
