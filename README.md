@@ -21,7 +21,7 @@ Expired | Boolean
 ### Docker
 ```bash
 mvn compile jib:dockerBuild
-docker run -d -p 80:8080 trade-app
+docker run -d -p 8080:8080 trade-app
 ```
 ### Maven
 ```bash
@@ -29,7 +29,27 @@ mvn spring-boot:run
 ```
 ---------------------------------------
 ### APIs / Endpoints
-#### Add trade
+#### Swagger URL
+
+`<http>://<host>:<port>/swagger-ui/index.html` <br>
+<br>
+e.g.
+http://localhost:8080/swagger-ui/index.html
+
+#### H2 URL
+
+`<http>://<host>:<port>/h2-console/login.jsp` <br>
+
+e.g.
+http://localhost:8080/h2-console/login.jsp
+
+JDBC URL: jdbc:h2:mem:tradedb <br>
+User Name: sa <br>
+Passowrd: password <br>
+
+---------------------------------------
+
+#### Add a trade
 * Validates the request
 * Rejects the request if maturity date is less than current date
 * Rejects the request if request version is older than latest version
@@ -74,14 +94,15 @@ curl -X 'GET' \
 
 ---------------------------------------
 ## Technology Stack
-* Spring boot
+* Java 11
+* Spring boot 2.4.4
     * JPA
     * Swagger with OpenAPI 3 specification
     * Scheduler
     * Zalando Problem support
     * Mockito and JUnit5
 * H2 In memory database
-* Docker
+* Docker support
 
 
 
