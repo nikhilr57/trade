@@ -1,5 +1,6 @@
 package com.db.demo.trade.validation;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -24,5 +25,15 @@ public class RequestValidatorTest {
 
 		Exception exception = assertThrows(TradeException.class, () -> RequestValidator.validateRequest(tR));
 		assertEquals("Invalid maturity date", exception.getMessage());
+	}
+
+	@Test
+	@DisplayName("Trade Request validation valid Maturty Date")
+	public void testTradeRequestValidationValidInput() {
+
+		TradeRequest tR = new TradeRequest.Builder().setTradeId("T1").setCounterPartyId("C1").setBookId("B1")
+				.setMaturityDate(LocalDate.now().plusDays(1)).build();
+		assertDoesNotThrow(() -> RequestValidator.validateRequest(tR));
+
 	}
 }

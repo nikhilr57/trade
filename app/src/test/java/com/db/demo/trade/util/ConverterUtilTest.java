@@ -22,6 +22,7 @@ public class ConverterUtilTest {
 		TradeResponse tR = ConverterUtil.convert(tE);
 		assertAll("TradeResponse", () -> assertEquals(tE.getBookId(), tR.getBookId()),
 				() -> assertEquals(tE.getCounterPartyId(), tR.getCounterPartyId()),
-				() -> assertEquals(tE.getTradeId(), tR.getTradeId()));
+				() -> assertEquals(tE.getTradeId(), tR.getTradeId()),
+				() -> assertEquals(tE.getVersion(), tR.getVersion()));
 	}
 }
